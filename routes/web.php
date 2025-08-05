@@ -9,7 +9,6 @@ use App\Http\Controllers\PanenController;
 use App\Http\Controllers\RekapKerjaController;
 use App\Http\Controllers\RekapProduksiController;
 use App\Http\Controllers\RawatController;
-use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\LaporanKeuanganController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
@@ -120,7 +119,6 @@ Route::put('/rekap-kerja/{id}', [RekapKerjaController::class, 'update'])->name('
 Route::delete('/rekap-kerja/{id}', [RekapKerjaController::class, 'destroy'])->name('rekap_kerja.destroy');
 
 Route::resource('rawat', RawatController::class);
-Route::resource('kegiatan', KegiatanController::class);
 
 Route::get('/laporan/keuangan', [LaporanKeuanganController::class, 'index'])->name('laporan.keuangan');
 

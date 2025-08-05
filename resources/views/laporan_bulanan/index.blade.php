@@ -58,7 +58,7 @@
                 <tr>
                     <th>No</th>
                     <th>Tanggal</th>
-                    <th>Nama Kegiatan</th>
+                    <th>Nama Item</th>
                     <th>Jumlah</th>
                     <th>Harga Satuan (Rp)</th>
                     <th>Total (Rp)</th>
@@ -75,19 +75,9 @@
                         <td>{{ number_format($item->jumlah, 2, ',', '.') }}</td>
                     </tr>
                 @endforeach
-                @foreach ($kegiatan as $key => $item)
-                    <tr>
-                        <td>{{ $key + count($rawat) + 1 }}</td>
-                        <td>{{ $item->tanggal }}</td>
-                        <td>{{ $item->name }}</td>
-                        <td>{{ $item->banyak }}</td>
-                        <td>{{ number_format($item->harga, 2, ',', '.') }}</td>
-                        <td>{{ number_format($item->jumlah, 2, ',', '.') }}</td>
-                    </tr>
-                @endforeach
                 @foreach ($rekapKerja as $key => $item)
                     <tr>
-                        <td>{{ $key + count($rawat) + count($kegiatan) + 1 }}</td>
+                        <td>{{ $key + count($rawat) + 1 }}</td>
                         <td>{{ $item->tanggal }}</td>
                         <td>{{ $item->jenis_kerjaan }}</td>
                         <td>{{ $item->banyak }}</td>

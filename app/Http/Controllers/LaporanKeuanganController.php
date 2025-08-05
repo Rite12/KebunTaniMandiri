@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Panen;
-use App\Models\Kegiatan;
 use App\Models\RekapKerja;
 use App\Models\Kehadiran;
 use Carbon\Carbon;
@@ -55,20 +54,7 @@ class LaporanKeuanganController extends Controller
                 ];
             });
 
-        $kegiatan = Kegiatan::whereYear('tanggal', $tahun)
-            ->whereMonth('tanggal', $bulan)
-            ->get(['name', 'jumlah', 'tanggal', 'keterangan'])
-            ->map(function ($item) {
-                return (object) [
-                    'jenis' => 'Pendapatan',
-                    'kategori' => 'Kegiatan',
-                    'jumlah' => $item->jumlah,
-                    'tanggal' => $item->tanggal,
-                    'keterangan' => $item->keterangan
-                ];
-            });
-
-        return $panen->concat($kegiatan);
+        return $panen;
     }
 
     // Mengambil data Pengeluaran

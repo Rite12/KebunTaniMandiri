@@ -6,7 +6,6 @@ use App\Models\Karyawan;
 use App\Models\LokasiSawit;
 use App\Models\Panen;
 use App\Models\RekapKerja;
-use App\Models\Kegiatan;
 use App\Models\Kehadiran;
 use App\Models\Rawat;
 use Illuminate\Http\Request;
@@ -36,13 +35,12 @@ class HomeController extends Controller
         // Total Pendapatan
         $totalPendapatan = Panen::sum('total_nilai');
 
-        // Total Pengeluaran (menggunakan rekapan dan kegiatan)
+        // Total Pengeluaran (menggunakan rekapan)
         $totalRekapKerja = RekapKerja::sum('jumlah');
-        $totalKegiatan = Kegiatan::sum('jumlah');
         $totalGajiLembur = Kehadiran::sum('total_gaji_lembur');
         $totalRawat = Rawat::sum('jumlah');
 
-        $totalPengeluaran = $totalRekapKerja + $totalKegiatan + $totalGajiLembur + $totalRawat;
+        $totalPengeluaran = $totalRekapKerja + $totalGajiLembur + $totalRawat;
 
         // Kehadiran hari ini
         $kehadiranHariIni = Kehadiran::whereDate('tanggal', Carbon::today())
@@ -63,28 +61,17 @@ class HomeController extends Controller
                                 ->orderBy('bulan')
                                 ->get();
 
-        // Data chart pengeluaran per bulan (dari RekapKerja dan Kegiatan)
+        // Data chart pengeluaran per bulan (dari RekapKerja)
         $pengeluaranRekapKerja = RekapKerja::selectRaw('MONTH(tanggal) as bulan, SUM(jumlah) as total_pengeluaran')
                                            ->groupBy('bulan')
                                            ->orderBy('bulan')
                                            ->get();
 
-        $pengeluaranKegiatan = Kegiatan::selectRaw('MONTH(tanggal) as bulan, SUM(jumlah) as total_pengeluaran')
-                                       ->groupBy('bulan')
-                                       ->orderBy('bulan')
-                                       ->get();
-
         // Inisialisasi array pengeluaran per bulan
         $pengeluaranPerBulan = array_fill(1, 12, 0);  // Menggunakan indeks 1 hingga 12 untuk bulan
 
-        // Gabungkan data pengeluaran dari RekapKerja dan Kegiatan
+        // Data pengeluaran dari RekapKerja
         foreach ($pengeluaranRekapKerja as $item) {
-            if (is_numeric($item->bulan) && $item->bulan >= 1 && $item->bulan <= 12) {
-                $pengeluaranPerBulan[$item->bulan] += $item->total_pengeluaran;
-            }
-        }
-
-        foreach ($pengeluaranKegiatan as $item) {
             if (is_numeric($item->bulan) && $item->bulan >= 1 && $item->bulan <= 12) {
                 $pengeluaranPerBulan[$item->bulan] += $item->total_pengeluaran;
             }

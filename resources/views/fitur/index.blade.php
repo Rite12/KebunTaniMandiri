@@ -24,7 +24,6 @@
     ['title' => 'Laporan Bulanan', 'icon' => 'file-alt', 'route' => 'laporan_bulanan.index', 'color' => 'secondary'],
     ['title' => 'Laporan Keuangan', 'icon' => 'file-invoice-dollar', 'route' => 'laporan.keuangan', 'color' => 'dark'],
     ['title' => 'Lokasi Sawit', 'icon' => 'map-marker-alt', 'route' => 'lokasi_sawit.index', 'color' => 'teal'],
-    ['title' => 'Pengeluaran Lainnya', 'icon' => 'calendar-day', 'route' => 'kegiatan.index', 'color' => 'primary'],  // Add Kegiatan her
         ];
     @endphp
 
