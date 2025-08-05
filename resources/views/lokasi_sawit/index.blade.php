@@ -154,8 +154,16 @@
 <!-- Peta Lokasi Sawit -->
 <div id="map" style="height: 400px; border: 1px solid #ddd; margin-bottom: 20px;"></div>
 
+<!-- Toggle Button for Table -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0"><i class="fas fa-table text-primary"></i> Data Lokasi Sawit</h5>
+    <button id="toggleTableBtn" class="btn btn-outline-primary btn-sm">
+        <i class="fas fa-eye-slash"></i> <span id="toggleText">Sembunyikan Tabel</span>
+    </button>
+</div>
+
 <!-- Tabel Lokasi Sawit -->
-<div class="card shadow-sm mb-4">
+<div id="dataTable" class="card shadow-sm mb-4">
     <div class="card-body">
         <div class="table-responsive">
             @if($lokasi_sawit->count() > 0)
@@ -866,22 +874,6 @@
                     🗺️ LEGENDA PETA SAWIT MANIS MADU
                 </div>
                 
-                <div style="margin-bottom: 12px;">
-                    <div style="background: linear-gradient(135deg, #fff3cd, #ffeaa7); 
-                               padding: 8px; 
-                               border-radius: 8px; 
-                               border-left: 4px solid #ffc107; 
-                               margin-bottom: 8px;">
-                        <div style="display: flex; align-items: center; margin-bottom: 4px;">
-                            <span style="color: #dc3545; font-size: 18px; margin-right: 8px;">★</span> 
-                            <span style="font-weight: bold; color: #856404;">TITIK TENGAH PETA</span>
-                        </div>
-                        <div style="font-size: 11px; color: #856404; margin-left: 26px;">
-                            📍 JON ALI - 1°32'52"S 103°05'34"E
-                        </div>
-                    </div>
-                </div>
-                
                 <div style="background: linear-gradient(135deg, #e8f5e8, #d4edda); 
                            padding: 10px; 
                            border-radius: 8px; 
@@ -894,24 +886,6 @@
                     <div style="font-size: 10px; color: #155724; margin-left: 24px; line-height: 1.4;">
                         ✅ Area dengan Label "L=" (Data Luas Tersedia)<br>
                         📊 4 Area - Total: 61.18 Ha (49.07%)
-                    </div>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px;">
-                    <div style="background: #f8f9fa; padding: 6px; border-radius: 6px; border-left: 3px solid #6c757d;">
-                        <div style="display: flex; align-items: center;">
-                            <span style="color: #6c757d; font-size: 14px; margin-right: 6px;">⋯⋯</span> 
-                            <span style="font-size: 11px; color: #495057;">Area Lain</span>
-                        </div>
-                        <div style="font-size: 9px; color: #6c757d; margin-left: 20px;">10 Area</div>
-                    </div>
-                    
-                    <div style="background: #e8f5e8; padding: 6px; border-radius: 6px; border-left: 3px solid #28a745;">
-                        <div style="display: flex; align-items: center;">
-                            <span style="color: #28a745; font-size: 12px; margin-right: 6px;">DB</span> 
-                            <span style="font-size: 11px; color: #155724;">Database</span>
-                        </div>
-                        <div style="font-size: 9px; color: #28a745; margin-left: 18px;">Marker DB</div>
                     </div>
                 </div>
                 
@@ -954,6 +928,45 @@
     ], {
         padding: [30, 30]
     });
+
+    // Table Toggle Functionality
+    document.getElementById('toggleTableBtn').addEventListener('click', function() {
+        const dataTable = document.getElementById('dataTable');
+        const toggleBtn = this;
+        const toggleText = document.getElementById('toggleText');
+        const icon = toggleBtn.querySelector('i');
+        
+        if (dataTable.style.display === 'none') {
+            // Show table
+            dataTable.style.display = 'block';
+            toggleText.textContent = 'Sembunyikan Tabel';
+            icon.className = 'fas fa-eye-slash';
+            toggleBtn.classList.remove('btn-outline-success');
+            toggleBtn.classList.add('btn-outline-primary');
+            
+            // Resize map back to normal
+            document.getElementById('map').style.height = '400px';
+        } else {
+            // Hide table
+            dataTable.style.display = 'none';
+            toggleText.textContent = 'Tampilkan Tabel';
+            icon.className = 'fas fa-eye';
+            toggleBtn.classList.remove('btn-outline-primary');
+            toggleBtn.classList.add('btn-outline-success');
+            
+            // Expand map for better visibility
+            document.getElementById('map').style.height = '600px';
+        }
+        
+        // Trigger map resize after DOM changes
+        setTimeout(function() {
+            map.invalidateSize();
+        }, 300);
+    });
+    
+    // Add smooth transition for table
+    document.getElementById('dataTable').style.transition = 'all 0.3s ease-in-out';
+    document.getElementById('map').style.transition = 'height 0.3s ease-in-out';
 </script>
 
 @endsection
